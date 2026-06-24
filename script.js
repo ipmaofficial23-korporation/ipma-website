@@ -175,12 +175,34 @@
         };
         window.addEventListener('scroll', countUp);
         
-        // Hero card click handlers
-        document.querySelectorAll('.hero-card').forEach(card => {
-            card.addEventListener('click', function() {
-                const url = this.getAttribute('data-url');
-                if (url && url !== '#') {
-                    window.open(url, '_blank');
-                }
-            });
+        // Hero card click handlers (dengan pengecualian untuk card Dokumentasi)
+document.querySelectorAll('.hero-card').forEach(card => {
+    card.addEventListener('click', function() {
+        // Abaikan card Dokumentasi yang memiliki id docCard
+        if (this.id === 'docCard') return;
+
+        const url = this.getAttribute('data-url');
+        if (url && url !== '#') {
+            window.open(url, '_blank');
+        }
+    });
+});
+
+// ========== POPUP DOKUMENTASI ==========
+document.addEventListener('DOMContentLoaded', function() {
+    const docCard = document.getElementById('docCard');
+    const docPopup = document.getElementById('docPopup');
+
+    if (docCard && docPopup) {
+        docCard.addEventListener('click', function(e) {
+            e.stopPropagation();
+            docPopup.style.display = 'block';
         });
+
+        document.addEventListener('click', function(event) {
+            if (!docCard.contains(event.target)) {
+                docPopup.style.display = 'none';
+            }
+        });
+    }
+});
